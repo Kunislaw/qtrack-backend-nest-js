@@ -9,9 +9,10 @@ import { PositionsModule } from './positions/positions.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, ClientsModule, DevicesModule, DriversModule, PositionsModule, VehiclesModule],
+  imports: [TypeOrmModule.forRoot(), UsersModule, ClientsModule, DevicesModule, DriversModule, PositionsModule, VehiclesModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
