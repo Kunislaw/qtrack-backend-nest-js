@@ -4,8 +4,8 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToOne, 
 
 @Entity("drivers")
 export class Driver {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     firstName: string;

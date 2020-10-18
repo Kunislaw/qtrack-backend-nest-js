@@ -5,8 +5,8 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne} from "type
 @Entity("devices")
 export class Device {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     ownName: string;

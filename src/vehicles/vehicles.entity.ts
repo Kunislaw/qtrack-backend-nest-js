@@ -3,8 +3,8 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
 
 @Entity("vehicles")
 export class Vehicle {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     mark: string;
