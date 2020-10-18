@@ -6,8 +6,8 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 
 @Entity("clients")
 export class Client {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     clientName: string;

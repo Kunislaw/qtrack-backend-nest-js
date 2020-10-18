@@ -3,8 +3,8 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToOne} 
 
 @Entity("positions")
 export class Position {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     latitude: number;
