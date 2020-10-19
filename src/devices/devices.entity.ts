@@ -1,6 +1,7 @@
 import { Client } from "../clients/clients.entity";
 import { Position } from "../positions/positions.entity";
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, OneToOne, JoinColumn} from "typeorm";
+import { Vehicle } from "src/vehicles/vehicles.entity";
 
 @Entity("devices")
 export class Device {
@@ -16,4 +17,8 @@ export class Device {
 
     @OneToMany(type => Position, position => position.device)
     positions: Position[];
+
+    @OneToOne(type => Vehicle)
+    @JoinColumn()
+    vehicle: Vehicle;
 }
