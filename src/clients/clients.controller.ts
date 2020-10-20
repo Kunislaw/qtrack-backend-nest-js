@@ -11,6 +11,11 @@ export class ClientsController {
 
     
     @Get()
+    getAllClients(){
+        return this.clientsService.getClients();
+    }
+
+    @Get("get")
     getClient(@Body() getClientDto: GetClientDTO){
         return this.clientsService.getClient(getClientDto);
     }
