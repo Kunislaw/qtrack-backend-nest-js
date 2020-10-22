@@ -11,7 +11,7 @@ export class UsersService {
     }
 
     async findOne(username: string): Promise<any | undefined>{
-        return await this.usersRepository.findOne({email: username})
+        return await this.usersRepository.findOne({where: {email: username}, relations: ["client"]});
     }
 
     async create(createUserDto : CreateUserDTO): Promise<any> {
