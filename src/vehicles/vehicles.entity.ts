@@ -13,7 +13,7 @@ export class Vehicle {
     model: string;
 
     @Column()
-    yearOfProduction: string;
+    yearOfProduction: number;
 
     @Column()
     VinNumber: string;

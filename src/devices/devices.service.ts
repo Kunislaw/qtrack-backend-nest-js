@@ -99,6 +99,6 @@ export class DevicesService {
     async getAllClientDevices(getAllClientDevicesDto : GetAllClientDevicesDTO){
         let clientDevices = await this.clientsRepository.findOne({where: {id: getAllClientDevicesDto.clientId}, relations: ["devices"]});
         if(clientDevices) return clientDevices.devices;
-        else return null;
+        else return [];
     }
 }
