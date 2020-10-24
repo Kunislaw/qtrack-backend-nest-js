@@ -1,5 +1,7 @@
 import { Client } from "../clients/clients.entity";
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne} from "typeorm";
+import { Device } from "src/devices/devices.entity";
+import { Driver } from "src/drivers/drivers.entity";
 
 @Entity("vehicles")
 export class Vehicle {
@@ -35,5 +37,11 @@ export class Vehicle {
 
     @ManyToOne(type => Client, client => client.vehicles)
     client: Client;
+
+    @OneToOne(type => Device, device => device.vehicle)
+    device: Device
+
+    @OneToOne(type => Driver, driver => driver.vehicle)
+    driver: Driver
 
 }

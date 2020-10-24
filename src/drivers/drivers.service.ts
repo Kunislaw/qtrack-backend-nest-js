@@ -114,7 +114,7 @@ export class DriversService {
     async getAllClientDrivers(getAllClientDriversDto : GetAllClientDevicesDTO){
         let clientDrivers = await this.clientsRepository.findOne({where: {id: getAllClientDriversDto.clientId}, relations: ["drivers"]});
         if(clientDrivers) return clientDrivers.drivers;
-        else return null;
+        else return [];
     }
 
 

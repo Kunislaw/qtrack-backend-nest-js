@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { create } from 'domain';
 import { Client } from 'src/clients/clients.entity';
-import { ClientsService } from 'src/clients/clients.service';
 import { CreateNewClientDTO } from 'src/clients/dto/create-new-client.dto';
-import { GetClientDTO } from 'src/clients/dto/get-client.dto';
+import { Device } from 'src/devices/devices.entity';
+import { Driver } from 'src/drivers/drivers.entity';
 import { Repository } from 'typeorm';
 import { CreateVehicleDTO } from './dto/create-vehicle.dto';
 import { DeleteVehicleDTO } from './dto/delete-vehicle.dto';
@@ -16,19 +15,20 @@ import { Vehicle } from './vehicles.entity';
 @Injectable()
 export class VehiclesService {
     constructor(@InjectRepository(Vehicle) private vehiclesRepository: Repository<Vehicle>,
-                @InjectRepository(Client) private clientsRepository : Repository<Client>) {}
+                @InjectRepository(Client) private clientsRepository : Repository<Client>,
+                @InjectRepository(Driver) private driversRepository : Repository<Driver>,
+                @InjectRepository(Device) private devicesRepository : Repository<Device>) {}
 
     async getAllVehicles(){
         return await this.vehiclesRepository.find({});
     }
 
     async getVehicle(getVehicleDto : GetVehicleDTO){
-        return await this.vehiclesRepository.findOne({id: getVehicleDto.id});
+        return await this.vehiclesRepository.findOne({where: {id: getVehicleDto.id}, relations: ["driver", "device"]});
     }
 
     async createVehicle(createVehicleDto : CreateVehicleDTO){
         let newVehicle = new Vehicle();
-
         if(createVehicleDto.VinNumber) newVehicle.VinNumber = createVehicleDto.VinNumber;
         if(createVehicleDto.engineCapacity) newVehicle.engineCapacity = createVehicleDto.engineCapacity;
         if(createVehicleDto.fuelType) newVehicle.fuelType = createVehicleDto.fuelType;
@@ -44,8 +44,26 @@ export class VehiclesService {
                 newVehicle.client = client;
             }
         }
+        if(createVehicleDto.driverId && createVehicleDto.driverId !== null){
+            let driver = await this.driversRepository.findOne({id: createVehicleDto.driverId});
+            if(driver){
+                newVehicle.driver = driver;
+            }
+        }
+        if(createVehicleDto.deviceId && createVehicleDto.deviceId !== null){
+            let device = await this.devicesRepository.findOne({id: createVehicleDto.deviceId});
+            if(device){
+                newVehicle.device = device;
+            }
+        }
         if(createVehicleDto.clientId === null){
             newVehicle.client = null;
+        }
+        if(createVehicleDto.driverId === null){
+            newVehicle.driver = null;
+        }
+        if(createVehicleDto.deviceId === null){
+            newVehicle.device =  null;
         }
         return await this.vehiclesRepository.save(newVehicle);
     }
@@ -107,8 +125,30 @@ export class VehiclesService {
                     anyChanges = true;
                 }
             }
+            if(editVehicleDto.driverId && editVehicleDto.driverId !== null){
+                let driver = await this.driversRepository.findOne({id: editVehicleDto.driverId});
+                if(driver){
+                    searchVehicle.driver = driver;
+                    anyChanges = true;
+                }
+            }
+            if(editVehicleDto.deviceId && editVehicleDto.deviceId !== null){
+                let device = await this.devicesRepository.findOne({id: editVehicleDto.deviceId});
+                if(device){
+                    searchVehicle.device = device;
+                    anyChanges = true;
+                }
+            }
             if(editVehicleDto.clientId === null){
                 searchVehicle.client = null;
+                anyChanges = true;
+            }
+            if(editVehicleDto.driverId === null){
+                searchVehicle.driver = null;
+                anyChanges = true;
+            }
+            if(editVehicleDto.deviceId === null){
+                searchVehicle.device = null;
                 anyChanges = true;
             }
             if(anyChanges){
@@ -122,7 +162,7 @@ export class VehiclesService {
     }
 
     async getAllClientVehicles(getAllClientVehiclesDto : GetAllClientVehiclesDTO){
-        let clientVehicles = await this.clientsRepository.findOne({where: {id: getAllClientVehiclesDto.id}, relations:["vehicles"]});
+        let clientVehicles = await this.clientsRepository.findOne({where: {id: getAllClientVehiclesDto.id}, relations:["vehicles", "vehicles.driver", "vehicles.device"]});
         if(clientVehicles) return clientVehicles.vehicles;
         else return [];
     }

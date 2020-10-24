@@ -18,7 +18,7 @@ export class Device {
     @OneToMany(type => Position, position => position.device)
     positions: Position[];
 
-    @OneToOne(type => Vehicle)
+    @OneToOne(type => Vehicle, vehicle => vehicle.device)
     @JoinColumn()
     vehicle: Vehicle;
 }

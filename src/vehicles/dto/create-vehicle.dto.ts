@@ -9,4 +9,6 @@ export class CreateVehicleDTO {
     odometer: number;
     plate: string;
     clientId: string;
+    driverId: string;
+    deviceId: string;
 }

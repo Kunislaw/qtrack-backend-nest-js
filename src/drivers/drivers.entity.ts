@@ -22,7 +22,7 @@ export class Driver {
     @ManyToOne(type => Client, client => client.drivers)
     client: Client;
 
-    @OneToOne(type => Vehicle)
+    @OneToOne(type => Vehicle, vehicle => vehicle.driver)
     @JoinColumn()
     vehicle: Vehicle;
 
