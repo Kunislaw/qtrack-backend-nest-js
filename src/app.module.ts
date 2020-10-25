@@ -10,9 +10,24 @@ import { VehiclesModule } from './vehicles/vehicles.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
+import { MqttModule } from 'nest-mqtt';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, ClientsModule, DevicesModule, DriversModule, PositionsModule, VehiclesModule, AuthModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    MqttModule.forRoot({
+      host: "gps-tracking.pl",
+      port: 1883,
+      protocol: "mqtt"
+    }),
+    UsersModule,
+    ClientsModule,
+    DevicesModule,
+    DriversModule,
+    PositionsModule,
+    VehiclesModule,
+    AuthModule,
+    ],
   controllers: [AppController],
   providers: [AppService],
 })

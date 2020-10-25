@@ -6,16 +6,16 @@ export class Position {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
+    @Column("float")
     latitude: number;
 
-    @Column()
+    @Column("float")
     longitude: number;
 
-    @Column()
+    @Column("float")
     altitude: number;
 
-    @Column()
+    @Column("float")
     speed: number;
 
     @Column()
