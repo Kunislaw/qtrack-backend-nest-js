@@ -96,7 +96,7 @@ export class PositionsService {
     }
 
     @Subscribe('devices/+')
-    test(@Topic() topic, @Packet() packet, @Params() params) {
+    newPositionFromDevice(@Topic() topic, @Packet() packet, @Params() params) {
         let deviceId = params[0];
         console.log("DeviceID", deviceId);
         console.log("TOPIC", topic);
