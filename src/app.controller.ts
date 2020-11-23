@@ -20,8 +20,9 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('test')
+  @Get('auth/user')
   getTest(@Request() req){
+    console.error("AAAAAAAAAAAAAAAAAA", req.user);
     return req.user;
   }
 }
