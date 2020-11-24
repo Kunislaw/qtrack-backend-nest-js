@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Params } from 'nest-mqtt';
 import { GetAllClientDevicesDTO } from 'src/devices/dto/get-all-client-devices.dto';
 import { DriversService } from './drivers.service';
 import { CreateDriverDTO } from './dto/create-driver.dto';
@@ -33,8 +34,8 @@ export class DriversController {
     editDriver(@Body() editDriverDto : EditDriverDTO){
         return this.driversService.editDriver(editDriverDto);
     }
-    @Get("client")
-    getAllClientDrivers(@Body() getAllClientDriversDto : GetAllClientDevicesDTO){
-        return this.driversService.getAllClientDrivers(getAllClientDriversDto);
+    @Get("client/:id")
+    getAllClientDrivers(@Param("id") clientId){
+        return this.driversService.getAllClientDrivers(clientId);
     }
 }
