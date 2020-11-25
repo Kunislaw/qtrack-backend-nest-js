@@ -26,8 +26,8 @@ export class DriversService {
         return await this.driversRepository.findOne({id: getDriverDto.id});
     }
 
-    async deleteDriver(deleteDriverDto : DeleteDriverDTO){
-        let searchDriver = await this.driversRepository.findOne({id: deleteDriverDto.id});
+    async deleteDriver(driverId){
+        let searchDriver = await this.driversRepository.findOne({id: driverId});
         if(searchDriver){
             await this.driversRepository.remove(searchDriver);
             return true;
@@ -81,7 +81,7 @@ export class DriversService {
             if(anyChanges){
                 return await this.driversRepository.save(searchDriver);
             } else {
-                return false;
+                return {i: false};
             }
         }
     }

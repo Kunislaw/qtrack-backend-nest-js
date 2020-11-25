@@ -26,9 +26,9 @@ export class DriversController {
         return this.driversService.createDriver(createDriverDto);
     }
 
-    @Delete("delete")
-    deleteDriver(@Body() deleteDriverDto : DeleteDriverDTO){
-        return this.driversService.deleteDriver(deleteDriverDto);
+    @Delete("delete/:id")
+    deleteDriver(@Param("id") driverId){
+        return this.driversService.deleteDriver(driverId);
     }
     @Put("edit")
     editDriver(@Body() editDriverDto : EditDriverDTO){
