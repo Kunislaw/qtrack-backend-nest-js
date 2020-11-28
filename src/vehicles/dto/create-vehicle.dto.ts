@@ -2,7 +2,7 @@ export class CreateVehicleDTO {
     mark: string;
     model: string;
     yearOfProduction: number;
-    VinNumber: string;
+    vinNumber: string;
     tankCapacity: number;
     engineCapacity: number
     fuelType: string;

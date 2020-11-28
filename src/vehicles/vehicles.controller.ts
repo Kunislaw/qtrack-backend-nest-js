@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateVehicleDTO } from './dto/create-vehicle.dto';
 import { DeleteVehicleDTO } from './dto/delete-vehicle.dto';
 import { EditVehicleDTO } from './dto/edit-vehicle.dto';
@@ -15,9 +15,9 @@ export class VehiclesController {
         return this.vehiclesService.getAllVehicles();
     }
 
-    @Get("client")
-    getAllClientVehicles(@Body() getAllClientVehiclesDto : GetAllClientVehiclesDTO){
-        return this.vehiclesService.getAllClientVehicles(getAllClientVehiclesDto);
+    @Get("client/:id")
+    getAllClientVehicles(@Param("id") clientId){
+        return this.vehiclesService.getAllClientVehicles(clientId);
     }
 
     @Get("get")
@@ -28,9 +28,9 @@ export class VehiclesController {
     createVehicle(@Body() createVehicleDto : CreateVehicleDTO){
         return this.vehiclesService.createVehicle(createVehicleDto);
     }
-    @Delete("delete")
-    deleteVehicle(@Body() deleteVehicleDto : DeleteVehicleDTO){
-        return this.vehiclesService.deleteVehicle(deleteVehicleDto);
+    @Delete("delete/:id")
+    deleteVehicle(@Param("id") vehicleId){
+        return this.vehiclesService.deleteVehicle(vehicleId);
     }
     @Put("edit")
     editVehicle(@Body() editVehicleDto : EditVehicleDTO){

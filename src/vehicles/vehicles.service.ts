@@ -29,7 +29,7 @@ export class VehiclesService {
 
     async createVehicle(createVehicleDto : CreateVehicleDTO){
         let newVehicle = new Vehicle();
-        if(createVehicleDto.VinNumber) newVehicle.VinNumber = createVehicleDto.VinNumber;
+        if(createVehicleDto.vinNumber) newVehicle.vinNumber = createVehicleDto.vinNumber;
         if(createVehicleDto.engineCapacity) newVehicle.engineCapacity = createVehicleDto.engineCapacity;
         if(createVehicleDto.fuelType) newVehicle.fuelType = createVehicleDto.fuelType;
         if(createVehicleDto.mark) newVehicle.mark = createVehicleDto.mark;
@@ -68,13 +68,13 @@ export class VehiclesService {
         return await this.vehiclesRepository.save(newVehicle);
     }
     
-    async deleteVehicle(deleteVehicleDto : DeleteVehicleDTO){
-        let searchVehicle = await this.vehiclesRepository.findOne({id: deleteVehicleDto.id});
+    async deleteVehicle(vehicleId){
+        let searchVehicle = await this.vehiclesRepository.findOne({id: vehicleId});
         if(searchVehicle){
             await this.vehiclesRepository.remove(searchVehicle);
-            return true;
+            return {result: true};
         } else {
-            return false;
+            return {result: false};
         }
     }
 
@@ -82,8 +82,8 @@ export class VehiclesService {
         let searchVehicle = await this.vehiclesRepository.findOne({id: editVehicleDto.id});
         if(searchVehicle){
             let anyChanges = false;
-            if(editVehicleDto.VinNumber){
-                searchVehicle.VinNumber = editVehicleDto.VinNumber;
+            if(editVehicleDto.vinNumber){
+                searchVehicle.vinNumber = editVehicleDto.vinNumber;
                 anyChanges = true;
             }
             if(editVehicleDto.engineCapacity){
@@ -161,10 +161,8 @@ export class VehiclesService {
         }
     }
 
-    async getAllClientVehicles(getAllClientVehiclesDto : GetAllClientVehiclesDTO){
-        let clientVehicles = await this.clientsRepository.findOne({where: {id: getAllClientVehiclesDto.id}, relations:["vehicles", "vehicles.driver", "vehicles.device"]});
-        if(clientVehicles) return clientVehicles.vehicles;
-        else return [];
+    async getAllClientVehicles(clientId){
+        return await this.vehiclesRepository.find({where: {client: clientId}, order: {plate: "ASC"}, relations: ["driver", "device"]});
     }
 
 }

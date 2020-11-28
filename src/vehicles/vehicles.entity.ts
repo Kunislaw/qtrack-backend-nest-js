@@ -8,31 +8,31 @@ export class Vehicle {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
+    @Column({nullable: false})
     mark: string;
 
-    @Column()
+    @Column({nullable: false})
     model: string;
 
-    @Column()
+    @Column({nullable: true})
     yearOfProduction: number;
 
-    @Column()
-    VinNumber: string;
+    @Column({nullable: true, unique: true})
+    vinNumber: string;
 
-    @Column()
+    @Column({nullable: true})
     tankCapacity: number;
 
-    @Column()
+    @Column({nullable: true})
     engineCapacity: number
 
-    @Column()
+    @Column({nullable: true})
     fuelType: string;
 
-    @Column()
+    @Column({nullable: true})
     odometer: number;
 
-    @Column()
+    @Column({nullable: false, unique: true})
     plate: string;
 
     @ManyToOne(type => Client, client => client.vehicles)
