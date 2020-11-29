@@ -112,8 +112,7 @@ export class DriversService {
 
 
     async getAllClientDrivers(clientId){
-        let clientDrivers = await this.driversRepository.find({where: {client: clientId}, order: {lastName: "ASC"}});
-        return clientDrivers;
+        return await this.driversRepository.find({where: {client: clientId}, order: {lastName: "ASC"}, relations: ["vehicle"]});
     }
 
 

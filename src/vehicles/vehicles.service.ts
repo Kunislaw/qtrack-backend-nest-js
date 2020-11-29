@@ -38,32 +38,23 @@ export class VehiclesService {
         if(createVehicleDto.plate) newVehicle.plate = createVehicleDto.plate;
         if(createVehicleDto.tankCapacity) newVehicle.tankCapacity = createVehicleDto.tankCapacity;
         if(createVehicleDto.yearOfProduction) newVehicle.yearOfProduction = createVehicleDto.yearOfProduction;
-        if(createVehicleDto.clientId && createVehicleDto.clientId !== null){
+        if(createVehicleDto.clientId){
             let client = await this.clientsRepository.findOne({id: createVehicleDto.clientId});
             if(client){
                 newVehicle.client = client;
             }
         }
-        if(createVehicleDto.driverId && createVehicleDto.driverId !== null){
+        if(createVehicleDto.driverId){
             let driver = await this.driversRepository.findOne({id: createVehicleDto.driverId});
             if(driver){
                 newVehicle.driver = driver;
             }
         }
-        if(createVehicleDto.deviceId && createVehicleDto.deviceId !== null){
+        if(createVehicleDto.deviceId){
             let device = await this.devicesRepository.findOne({id: createVehicleDto.deviceId});
             if(device){
                 newVehicle.device = device;
             }
-        }
-        if(createVehicleDto.clientId === null){
-            newVehicle.client = null;
-        }
-        if(createVehicleDto.driverId === null){
-            newVehicle.driver = null;
-        }
-        if(createVehicleDto.deviceId === null){
-            newVehicle.device =  null;
         }
         return await this.vehiclesRepository.save(newVehicle);
     }
@@ -82,15 +73,15 @@ export class VehiclesService {
         let searchVehicle = await this.vehiclesRepository.findOne({id: editVehicleDto.id});
         if(searchVehicle){
             let anyChanges = false;
-            if(editVehicleDto.vinNumber){
+            if(editVehicleDto.vinNumber || editVehicleDto.vinNumber === null){
                 searchVehicle.vinNumber = editVehicleDto.vinNumber;
                 anyChanges = true;
             }
-            if(editVehicleDto.engineCapacity){
+            if(editVehicleDto.engineCapacity || editVehicleDto.engineCapacity === null){
                 searchVehicle.engineCapacity = editVehicleDto.engineCapacity;
                 anyChanges = true;
             }
-            if(editVehicleDto.fuelType){
+            if(editVehicleDto.fuelType || editVehicleDto.fuelType === null){
                 searchVehicle.fuelType = editVehicleDto.fuelType;
                 anyChanges = true;
             }
@@ -102,7 +93,7 @@ export class VehiclesService {
                 searchVehicle.model = editVehicleDto.model;
                 anyChanges = true;
             }
-            if(editVehicleDto.odometer){
+            if(editVehicleDto.odometer || editVehicleDto.odometer === null){
                 searchVehicle.odometer = editVehicleDto.odometer;
                 anyChanges = true;
             }
@@ -110,29 +101,32 @@ export class VehiclesService {
                 searchVehicle.plate = editVehicleDto.plate;
                 anyChanges = true;
             }
-            if(editVehicleDto.tankCapacity){
+            if(editVehicleDto.tankCapacity || editVehicleDto.tankCapacity === null){
                 searchVehicle.tankCapacity = editVehicleDto.tankCapacity;
                 anyChanges = true;
             }
-            if(editVehicleDto.yearOfProduction){
+            if(editVehicleDto.yearOfProduction || editVehicleDto.yearOfProduction === null){
                 searchVehicle.yearOfProduction = editVehicleDto.yearOfProduction;
                 anyChanges = true;
             }
-            if(editVehicleDto.clientId && editVehicleDto.clientId !== null){
+
+            if(editVehicleDto.clientId){
                 let client = await this.clientsRepository.findOne({id: editVehicleDto.clientId});
                 if(client){
                     searchVehicle.client = client;
                     anyChanges = true;
                 }
             }
-            if(editVehicleDto.driverId && editVehicleDto.driverId !== null){
+            if(editVehicleDto.driverId){
                 let driver = await this.driversRepository.findOne({id: editVehicleDto.driverId});
                 if(driver){
+                    searchVehicle.driver = null;
+                    await this.vehiclesRepository.save(searchVehicle);
                     searchVehicle.driver = driver;
                     anyChanges = true;
                 }
             }
-            if(editVehicleDto.deviceId && editVehicleDto.deviceId !== null){
+            if(editVehicleDto.deviceId){
                 let device = await this.devicesRepository.findOne({id: editVehicleDto.deviceId});
                 if(device){
                     searchVehicle.device = device;

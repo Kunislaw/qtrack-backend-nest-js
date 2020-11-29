@@ -46,13 +46,13 @@ export class DevicesService {
 
 
 
-    async deleteDevice(deleteDeviceDto : DeleteDeviceDTO){
-        let searchDevice = await this.devicesRepository.findOne({id: deleteDeviceDto.id});
+    async deleteDevice(deviceId){
+        let searchDevice = await this.devicesRepository.findOne({id: deviceId});
         if(searchDevice){
             await this.devicesRepository.remove(searchDevice);
-            return true;
+            return {result: true};
         } else {
-            return false;
+            return {result: false};
         }
     }
 
@@ -96,9 +96,7 @@ export class DevicesService {
         }
     }
 
-    async getAllClientDevices(getAllClientDevicesDto : GetAllClientDevicesDTO){
-        let clientDevices = await this.clientsRepository.findOne({where: {id: getAllClientDevicesDto.clientId}, relations: ["devices"]});
-        if(clientDevices) return clientDevices.devices;
-        else return [];
+    async getAllClientDevices(clientId){
+        return await this.devicesRepository.find({where: {client: clientId}, relations: ["vehicle"]})
     }
 }

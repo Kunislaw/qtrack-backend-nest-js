@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { DevicesService } from './devices.service';
 import { CreateNewDeviceDTO } from './dto/create-new-device.dto';
 import { DeleteDeviceDTO } from './dto/delete-device.dto';
@@ -25,9 +25,9 @@ export class DevicesController {
         return this.devicesService.createNewDevice(createNewDeviceDto);
     }
 
-    @Delete("delete")
-    deleteDevice(@Body() deleteDeviceDto : DeleteDeviceDTO){
-        return this.devicesService.deleteDevice(deleteDeviceDto);
+    @Delete("delete/:id")
+    deleteDevice(@Param("id") deviceId){
+        return this.devicesService.deleteDevice(deviceId);
     }
 
     @Put("edit")
@@ -35,9 +35,9 @@ export class DevicesController {
         return this.devicesService.editDevice(editDeviceDto);
     }
 
-    @Get("client")
-    getAllClientsDevices(@Body() getAllClientDevicesDto: GetAllClientDevicesDTO){
-        return this.devicesService.getAllClientDevices(getAllClientDevicesDto);
+    @Get("client/:id")
+    getAllClientsDevices(@Param("id") clientId){
+        return this.devicesService.getAllClientDevices(clientId);
     }
 
 
