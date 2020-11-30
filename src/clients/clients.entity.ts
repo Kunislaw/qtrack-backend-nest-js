@@ -9,14 +9,35 @@ export class Client {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
-    clientName: string;
+    @Column({nullable: false})
+    name: string;
 
-    @Column()
-    clientAddress: string;
+    @Column({nullable: false})
+    phone: string;
 
-    @Column()
+    @Column({nullable: false})
+    zipCode: string;
+
+    @Column({nullable: false})
+    address: string;
+
+    @Column({nullable: false})
+    country: string;
+
+    @Column({nullable: true})
+    firstName: string;
+    
+    @Column({nullable: true})
+    lastName: string;
+
+    @Column({nullable: false})
     isCompany: boolean;
+
+    @Column({nullable: true})
+    companyName: string;
+
+    @Column({nullable: true})
+    companyTaxIdentifier: string;
 
     @OneToMany(type => User, user => user.client)
     users: User[];

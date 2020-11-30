@@ -1,5 +1,13 @@
 export class CreateNewClientDTO {
-    clientName: string;
-    clientAddress: string;
+    name: string;
+    phone: string;
+    zipCode: string;
+    address: string;
+    firstName: string;
+    country: string;
+    lastName: string;
     isCompany: boolean;
+    companyName: string;
+    companyTaxIdentifier: string;
+    
 }
