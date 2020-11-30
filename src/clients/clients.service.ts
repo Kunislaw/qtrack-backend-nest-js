@@ -76,10 +76,7 @@ export class ClientsService {
                 searchClient.country = editClientDto.country;
                 anyChanges = true;
             }
-            if(editClientDto.isCompany){
-                searchClient.isCompany = editClientDto.isCompany;
-                anyChanges = true;
-            }
+
             if(editClientDto.firstName || editClientDto.firstName === null){
                 searchClient.firstName = editClientDto.firstName;
                 anyChanges = true;
@@ -94,6 +91,20 @@ export class ClientsService {
             }
             if(editClientDto.companyTaxIdentifier || editClientDto.companyTaxIdentifier === null){
                 searchClient.companyTaxIdentifier = editClientDto.companyTaxIdentifier;
+                anyChanges = true;
+            }
+
+            if(editClientDto.isCompany === true){
+                searchClient.isCompany = editClientDto.isCompany;
+                searchClient.firstName = null;
+                searchClient.lastName = null;
+                anyChanges = true;
+            }
+
+            if(editClientDto.isCompany === false){
+                searchClient.isCompany = editClientDto.isCompany;
+                searchClient.companyName = null;
+                searchClient.companyTaxIdentifier = null;
                 anyChanges = true;
             }
 
