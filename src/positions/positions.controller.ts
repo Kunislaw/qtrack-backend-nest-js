@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { DeletePositionDTO } from './dto/delete-position.dto';
 import { EditPositionDTO } from './dto/edit-positions.dto';
 import { GetAllDevicePositionsDTO } from './dto/get-all-device-positions.dto';
 import { GetPositionDTO } from './dto/get-position.dto';
+import { GetPositionsFromToDTO } from './dto/get-positions-from-to.dto';
 import { PositionsService } from './positions.service';
 
 @Controller('positions')
@@ -29,9 +30,14 @@ export class PositionsController {
         return this.positionsService.editPosition(editPositionDto);
     }
 
-    @Get("device")
-    getAllDevicePositions(getAllDevicePositionsDto : GetAllDevicePositionsDTO){
-        return this.positionsService.getAllDevicePositions(getAllDevicePositionsDto);
+    @Get("device/:id")
+    getAllDevicePositions(@Param("id") deviceId){
+        return this.positionsService.getAllDevicePositions(deviceId);
+    }
+
+    @Post("device/fromto")
+    getPositionsFromTo(@Body() getPositionsFromToDto : GetPositionsFromToDTO){
+        return this.positionsService.getDevicesPositionsFromTo(getPositionsFromToDto);
     }
 
 }

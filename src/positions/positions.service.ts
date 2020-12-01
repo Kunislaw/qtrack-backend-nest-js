@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Packet, Params, Payload, Subscribe, Topic } from 'nest-mqtt';
 import { Device } from 'src/devices/devices.entity';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan, LessThan, MoreThanOrEqual, LessThanOrEqual, Between } from 'typeorm';
 import { CreatePositionDTO } from './dto/create-position.dto';
 import { DeletePositionDTO } from './dto/delete-position.dto';
 import { EditPositionDTO } from './dto/edit-positions.dto';
 import { GetAllDevicePositionsDTO } from './dto/get-all-device-positions.dto';
 import { GetPositionDTO } from './dto/get-position.dto';
+import { GetPositionsFromToDTO } from './dto/get-positions-from-to.dto';
 import { Position } from './positions.entity';
 
 @Injectable()
@@ -91,11 +92,16 @@ export class PositionsService {
 
     }
 
-    async getAllDevicePositions(getAllDevicePositionsDto : GetAllDevicePositionsDTO){
-
+    async getAllDevicePositions(deviceId){
+        return await this.positionsRepository.find({where: {device: deviceId}})
     }
 
-    @Subscribe('devices/+')
+    async getDevicesPositionsFromTo(getPositionsFromToDto: GetPositionsFromToDTO){
+        return await this.positionsRepository.find({where: {device: getPositionsFromToDto.deviceId, utcTimestamp: Between(getPositionsFromToDto.from.getTime(), getPositionsFromToDto.to.getTime())}});
+    }
+
+
+    @Subscribe('client/+/device/+/position')
     newPositionFromDevice(@Topic() topic, @Packet() packet, @Params() params) {
         let deviceId = params[0];
         console.log("DeviceID", deviceId);
