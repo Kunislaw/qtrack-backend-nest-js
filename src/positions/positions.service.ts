@@ -103,9 +103,39 @@ export class PositionsService {
 
     @Subscribe('client/+/device/+/position')
     newPositionFromDevice(@Topic() topic, @Packet() packet, @Params() params) {
-        let deviceId = params[0];
-        console.log("DeviceID", deviceId);
-        console.log("TOPIC", topic);
-        console.log("PAYLOAD", packet.payload);
+        let clientId = params[0];
+        let deviceId = params[1];
+        let payload = packet.payload;
+        // .month = 12,
+        // .day = 2,
+        // .hour = 21,
+        // .minutes = 6,
+        // .seconds = 12
+
+        let speed = Buffer.from(payload.slice(0,4)).readFloatLE(0);
+        let altitude = Buffer.from(payload.slice(4,8)).readFloatLE(0);
+        let latitude = Buffer.from(payload.slice(8,12)).readFloatLE(0);
+        let longitude = Buffer.from(payload.slice(12,16)).readFloatLE(0);
+        let year = Buffer.from(payload.slice(16,18)).readUInt16LE(0);
+        let month = Buffer.from(payload.slice(18,19)).readUInt8(0);
+        let day = Buffer.from(payload.slice(19,20)).readUInt8(0);
+        let hour = Buffer.from(payload.slice(20,21)).readUInt8(0);
+        let minutes = Buffer.from(payload.slice(21,22)).readUInt8(0);
+        let seconds = Buffer.from(payload.slice(22,23)).readUInt8(0);
+        console.error("ClientID", clientId);
+        console.error("DeviceID", deviceId);
+        console.error("TOPIC", topic);
+        console.error("PAYLOAD", packet.payload);
+        console.error("altitude",altitude);
+        console.error("speed",speed);
+        console.error("longitude",longitude);
+        console.error("latitude",latitude);
+        console.error("year",year);
+        console.error("month",month);
+        console.error("day",day);
+        console.error("hour",hour);
+        console.error("minutes",minutes);
+        console.error("seconds",seconds);
+
     }
 }
