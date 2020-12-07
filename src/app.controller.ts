@@ -22,7 +22,6 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('auth/user')
   getTest(@Request() req){
-    console.error("AAAAAAAAAAAAAAAAAA", req.user);
     return req.user;
   }
 }
