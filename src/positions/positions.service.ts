@@ -125,7 +125,9 @@ export class PositionsService {
             newPosition.latitude = latitude;
             newPosition.longitude = longitude;
             newPosition.utcTimestamp = timestamp_utc;
-            await this.positionsRepository.save(newPosition);
+            let newPositionWithId = await this.positionsRepository.save(newPosition);
+            searchDevice.lastPosition = newPositionWithId;
+            await this.devicesRepository.save(searchDevice);
             console.error("Nowa pozycja", packet.payload);
             console.error("altitude",altitude);
             console.error("speed",speed);

@@ -42,6 +42,5 @@ export class Vehicle {
     device: Device
 
     @OneToOne(type => Driver, driver => driver.vehicle)
-    driver: Driver
-
+    driver: Driver 
 }

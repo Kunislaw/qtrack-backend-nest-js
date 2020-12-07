@@ -21,4 +21,8 @@ export class Device {
     @OneToOne(type => Vehicle, vehicle => vehicle.device)
     @JoinColumn()
     vehicle: Vehicle;
+
+    @OneToOne(type => Position, position => position.device)
+    @JoinColumn()
+    lastPosition: Position;
 }

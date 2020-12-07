@@ -156,7 +156,7 @@ export class VehiclesService {
     }
 
     async getAllClientVehicles(clientId){
-        return await this.vehiclesRepository.find({where: {client: clientId}, order: {plate: "ASC"}, relations: ["driver", "device"]});
+        return await this.vehiclesRepository.find({where: {client: clientId}, order: {plate: "ASC"}, relations: ["driver", "device", "device.lastPosition"]});
     }
 
 }
