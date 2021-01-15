@@ -1,0 +1,6 @@
+projectKey=qtrack-backend-nest-js
+serverUrl=http://localhost:4000
+serverVersion=8.6.0.39681
+dashboardUrl=http://localhost:4000/dashboard?id=qtrack-backend-nest-js
+ceTaskId=AXZWsrK8H4Z2lMG6cS3L
+ceTaskUrl=http://localhost:4000/api/ce/task?id=AXZWsrK8H4Z2lMG6cS3L
