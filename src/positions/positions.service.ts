@@ -11,6 +11,7 @@ import { GetPositionDTO } from './dto/get-position.dto';
 import { GetPositionsFromToDTO } from './dto/get-positions-from-to.dto';
 import { Position } from './positions.entity';
 import { CalcCRC16 } from "../utils/crc16/crc16";
+import { time } from 'console';
 @Injectable()
 export class PositionsService {
     constructor(@InjectRepository(Position) private positionsRepository: Repository<Position>,
@@ -142,24 +143,44 @@ export class PositionsService {
             let longitude = Buffer.from(payload.slice(12,16)).readFloatLE(0);
             let timestamp_utc = Buffer.from(payload.slice(16,20)).readUInt32LE(0);
             let crc16 = Buffer.from(payload.slice(20,22)).readUInt16LE(0);
-            let calculatedCRC16 = CalcCRC16(payload.slice(0,20)); 
+            let calculatedCRC16 = CalcCRC16(payload.slice(0,20));
             if(crc16 === calculatedCRC16){
-                let newPosition = new Position();
-                newPosition.device = searchDevice;
-                newPosition.speed = speed;
-                newPosition.altitude = altitude;
-                newPosition.latitude = latitude;
-                newPosition.longitude = longitude;
-                newPosition.utcTimestamp = timestamp_utc;
-                let newPositionWithId = await this.positionsRepository.save(newPosition);
-                searchDevice.lastPosition = newPositionWithId;
-                await this.devicesRepository.save(searchDevice);
-                console.error("Nowa pozycja CRC", packet.payload);
-                console.error("altitude",altitude);
-                console.error("speed",speed);
-                console.error("longitude",longitude);
-                console.error("latitude",latitude);
-                console.error("timestamp_utc",timestamp_utc);
+                if((timestamp_utc * 1000) <= new Date().getTime()){
+                    if(latitude >= -90 && latitude <= 90){
+                        if(longitude >= -180 && longitude <= 180){
+                            if(speed >= 0 && speed <= 42){
+                                if(altitude > 0){
+                                    let newPosition = new Position();
+                                    newPosition.device = searchDevice;
+                                    newPosition.speed = speed;
+                                    newPosition.altitude = altitude;
+                                    newPosition.latitude = latitude;
+                                    newPosition.longitude = longitude;
+                                    newPosition.utcTimestamp = timestamp_utc;
+                                    let newPositionWithId = await this.positionsRepository.save(newPosition);
+                                    searchDevice.lastPosition = newPositionWithId;
+                                    await this.devicesRepository.save(searchDevice);
+                                    console.error("Nowa pozycja CRC", packet.payload);
+                                    console.error("altitude",altitude);
+                                    console.error("speed",speed);
+                                    console.error("longitude",longitude);
+                                    console.error("latitude",latitude);
+                                    console.error("timestamp_utc",timestamp_utc);
+                                } else {
+                                    console.error("Wysokosc nie moze byc pod poziomem morza: " + altitude);
+                                }
+                            } else {
+                                console.error("Zbyt duza predkosc - otrzymano - ");
+                            }
+                        } else {
+                            console.error("Zla dlugosc geograficzna otrzymano: " + longitude)
+                        }
+                    } else {
+                        console.error("Zla szerokosc geograficzna otrzymano: " + latitude);
+                    }
+                } else {
+                    console.error("Blad - data z przyszlosci: " + timestamp_utc);
+                }
             } else {
                 console.error("ZLE CRC Otrzymane: " + crc16 + " Obliczone: " + calculatedCRC16);
             }
